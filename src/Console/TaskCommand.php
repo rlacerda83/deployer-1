@@ -97,6 +97,8 @@ class TaskCommand extends Command
             }
         }
 
-        $executor->run($tasks, $servers, $environments, $input, $output, $this->logger);
+        $emitter = $this->deployer->getEmitter();
+
+        $executor->run($tasks, $servers, $environments, $input, $output, $this->logger, $emitter);
     }
 }
