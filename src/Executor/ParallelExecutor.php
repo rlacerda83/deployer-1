@@ -11,7 +11,6 @@ use Deployer\Console\Output\OutputWatcher;
 use Deployer\Console\Output\VerbosityString;
 use Deployer\Server\Environment;
 use Deployer\Task\Context;
-use League\Event\Emitter;
 use Pure\Server;
 use Pure\Storage\ArrayStorage;
 use Pure\Storage\QueueStorage;
@@ -121,11 +120,6 @@ class ParallelExecutor implements ExecutorInterface
     private $hasNonFatalException = false;
 
     /**
-     * @var Emitter
-     */
-    private $emitter;
-
-    /**
      * @param InputDefinition $userDefinition
      */
     public function __construct(InputDefinition $userDefinition)
@@ -136,7 +130,7 @@ class ParallelExecutor implements ExecutorInterface
     /**
      * {@inheritdoc}
      */
-    public function run($tasks, $servers, $environments, $input, $output, $logger, $emitter)
+    public function run($tasks, $servers, $environments, $input, $output, $logger)
     {
         $this->tasks = $tasks;
         $this->servers = $servers;
@@ -145,7 +139,6 @@ class ParallelExecutor implements ExecutorInterface
         $this->output = new OutputWatcher($output, $logger);
         $this->informer = new Informer($this->output);
         $this->port = self::START_PORT;
-        $this->emitter = $emitter;
 
         connect:
 
@@ -262,8 +255,6 @@ class ParallelExecutor implements ExecutorInterface
                 // If we got NonFatalException, continue other tasks.
                 $this->hasNonFatalException = true;
             } else {
-                // need task name to emitter!!! Im thinking!! Help??
-
                 // Do not run other task.
                 // Finish all current worker tasks and stop loop.
                 $this->tasks = [];

@@ -10,7 +10,6 @@ namespace Deployer\Executor;
 use Deployer\Server\ServerInterface;
 use Deployer\Server\Environment;
 use Deployer\Task\Task;
-use League\Event\Emitter;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -23,7 +22,6 @@ interface ExecutorInterface
      * @param InputInterface $input
      * @param OutputInterface $output
      * @param $logger
-     * @param Emitter $emitter
      */
-    public function run($tasks, $servers, $environments, $input, $output, $logger, $emitter);
+    public function run($tasks, $servers, $environments, $input, $output, $logger);
 }

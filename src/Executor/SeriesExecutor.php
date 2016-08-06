@@ -17,7 +17,7 @@ class SeriesExecutor implements ExecutorInterface
     /**
      * {@inheritdoc}
      */
-    public function run($tasks, $servers, $environments, $input, $output, $logger, $emitter)
+    public function run($tasks, $servers, $environments, $input, $output, $logger)
     {
         $output = new OutputWatcher($output, $logger);
         $informer = new Informer($output);
@@ -45,7 +45,7 @@ class SeriesExecutor implements ExecutorInterface
                             $success = false;
                             $informer->taskException($serverName, 'Deployer\Task\NonFatalException', $exception->getMessage());
                         } catch (\RuntimeException $e) {
-                            $emitter->emit($task->getName());
+                            $task->dispatchErrorEvent($e);
                             throw $e;
                         }
 

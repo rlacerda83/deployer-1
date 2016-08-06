@@ -11,6 +11,7 @@ use Deployer\Console\Application;
 use Deployer\Deployer;
 use Deployer\Log\LogWriter;
 use Symfony\Component\Console\Tester\ApplicationTester;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 trait DeployerHelper
 {
@@ -40,9 +41,9 @@ trait DeployerHelper
     protected $logger;
 
     /**
-     * @var \League\Event\Emitter
+     * @var EventDispatcher
      */
-    protected $emitter;
+    protected $eventDispatcher;
 
     /**
      * Init deployer
@@ -58,7 +59,8 @@ trait DeployerHelper
         // Prepare Deployer
         $this->input = $this->getMock('Symfony\Component\Console\Input\InputInterface');
         $this->output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
-        $this->emitter = $this->getMock('\League\Event\Emitter');
-        $this->deployer = new Deployer($console, $this->input, $this->output, $this->logger, $this->emitter);
+        $this->eventDispatcher = $this->getMock('\Symfony\Component\EventDispatcher\EventDispatcher');
+
+        $this->deployer = new Deployer($console, $this->input, $this->output, $this->logger, $this->eventDispatcher);
     }
 }
